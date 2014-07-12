@@ -4,6 +4,7 @@
   "dependencies": {
     "gulp-jade": "^0.6.1",
     "gulp-livescript": "^1.0.3",
+    "gulp-plumber": "^0.6.3",
     "gulp-stylus": "^1.0.5"
   },
   "devDependencies": {

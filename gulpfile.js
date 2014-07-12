@@ -2,12 +2,21 @@
 // generated on 2014-07-12 using generator-gulp-webapp 0.1.0
 
 var gulp = require('gulp');
+var plumber = require('gulp-plumber');
 
 // load plugins
 var $ = require('gulp-load-plugins')();
 
+gulp.task('views', function () {
+    return gulp.src(['app/*.jade', '!app/layout.jade'])
+        .pipe(plumber())
+        .pipe($.jade({pretty: true}))
+        .pipe(gulp.dest('.tmp'));
+});
+
 gulp.task('styles', function () {
     return gulp.src('app/styles/main.styl')
+        .pipe(plumber())
         .pipe($.stylus())
         .pipe($.autoprefixer('last 1 version'))
         .pipe(gulp.dest('.tmp/styles'))
@@ -16,15 +25,16 @@ gulp.task('styles', function () {
 
 gulp.task('scripts', function () {
     return gulp.src('app/scripts/**/*.ls')
+        .pipe(plumber())
         .pipe($.livescript())
         .pipe(gulp.dest('.tmp/scripts'))
 });
 
-gulp.task('html', ['styles', 'scripts'], function () {
+gulp.task('html', ['views', 'styles', 'scripts'], function () {
     var jsFilter = $.filter('**/*.js');
     var cssFilter = $.filter('**/*.css');
 
-    return gulp.src('app/*.html')
+    return gulp.src('.tmp/*.html')
         .pipe($.useref.assets({searchPath: '{.tmp,app}'}))
         .pipe(jsFilter)
         .pipe($.uglify())
@@ -58,7 +68,7 @@ gulp.task('fonts', function () {
 });
 
 gulp.task('extras', function () {
-    return gulp.src(['app/*.*', '!app/*.html'], { dot: true })
+    return gulp.src(['app/*.*', '!app/*.jade'], { dot: true })
         .pipe(gulp.dest('dist'));
 });
 
@@ -87,7 +97,7 @@ gulp.task('connect', function () {
         });
 });
 
-gulp.task('serve', ['connect', 'styles', 'scripts'], function () {
+gulp.task('serve', ['connect', 'views', 'styles', 'scripts'], function () {
     require('opn')('http://localhost:9000');
 });
 
@@ -101,7 +111,7 @@ gulp.task('wiredep', function () {
         }))
         .pipe(gulp.dest('app/styles'));
 
-    gulp.src('app/*.html')
+    gulp.src('app/*.jade')
         .pipe(wiredep({
             directory: 'app/bower_components',
             exclude: ['bootstrap-sass-official']
@@ -115,7 +125,7 @@ gulp.task('watch', ['connect', 'serve'], function () {
     // watch for changes
 
     gulp.watch([
-        'app/*.html',
+        '.tmp/*.html',
         '.tmp/styles/**/*.css',
         '{.tmp, app}/scripts/**/*.js',
         'app/images/**/*'
@@ -123,6 +133,7 @@ gulp.task('watch', ['connect', 'serve'], function () {
         server.changed(file.path);
     });
 
+    gulp.watch('app/*.jade', ['views']);
     gulp.watch('app/styles/**/*.styl', ['styles']);
     gulp.watch('app/scripts/**/*.ls', ['scripts']);
     gulp.watch('app/images/**/*', ['images']);
