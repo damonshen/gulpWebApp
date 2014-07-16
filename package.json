@@ -1,12 +1,6 @@
 {
   "name": "gulpwepapp",
   "version": "0.0.0",
-  "dependencies": {
-    "gulp-jade": "^0.6.1",
-    "gulp-livescript": "^1.0.3",
-    "gulp-plumber": "^0.6.3",
-    "gulp-stylus": "^1.0.5"
-  },
   "devDependencies": {
     "connect": "^2.14.4",
     "connect-livereload": "^0.4.0",
@@ -28,7 +22,11 @@
     "gulp-useref": "^0.4.2",
     "jshint-stylish": "^0.2.0",
     "opn": "^0.1.1",
-    "wiredep": "^1.4.3"
+    "wiredep": "^1.4.3",
+    "gulp-jade": "^0.6.1",
+    "gulp-livescript": "^1.0.3",
+    "gulp-plumber": "^0.6.3",
+    "gulp-stylus": "^1.0.5"
   },
   "engines": {
     "node": ">=0.10.0"
