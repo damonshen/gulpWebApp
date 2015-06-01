@@ -2,24 +2,22 @@
 // generated on 2014-07-12 using generator-gulp-webapp 0.1.0
 
 var gulp = require('gulp');
-var plumber = require('gulp-plumber');
 
 // load plugins
 var $ = require('gulp-load-plugins')();
 
 gulp.task('views', function () {
     return gulp.src(['app/*.jade', '!app/layout.jade'])
-        .pipe(plumber())
+        .pipe($.plumber())
         .pipe($.jade({pretty: true}))
         .pipe(gulp.dest('.tmp'));
 });
 
 var nib = require('nib');
-var jeet = require('jeet');
 gulp.task('styles', function () {
     return gulp.src('app/styles/main.styl')
-        .pipe(plumber())
-        .pipe($.stylus({use: [nib(), jeet()]}))
+        .pipe($.plumber())
+        .pipe($.stylus({use: [nib()]}))
         .pipe($.autoprefixer('last 1 version'))
         .pipe(gulp.dest('.tmp/styles'))
         .pipe($.size());
@@ -27,7 +25,7 @@ gulp.task('styles', function () {
 
 gulp.task('scripts', function () {
     return gulp.src('app/scripts/**/*.ls')
-        .pipe(plumber())
+        .pipe($.plumber())
         .pipe($.livescript())
         .pipe(gulp.dest('.tmp/scripts'))
 });
