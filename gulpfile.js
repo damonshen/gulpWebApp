@@ -83,22 +83,26 @@ gulp.task('default', ['clean'], function () {
 });
 
 gulp.task('connect', function () {
+    // process.env.PORT for Heroku
+    var port = process.env.PORT || 3000; 
     var connect = require('connect');
-    var app = connect()
+    var express = require('express');
+
+    var app = express()
         .use(require('connect-livereload')({ port: 35729 }))
         .use(connect.static('app'))
         .use(connect.static('.tmp'))
-        .use(connect.directory('app'));
-
-    require('http').createServer(app)
-        .listen(9000)
+        .use(connect.directory('app'))
+        .listen(port)
         .on('listening', function () {
-            console.log('Started connect web server on http://localhost:9000');
+            console.log('Started connect web server on http://localhost:' + port);
         });
 });
 
 gulp.task('serve', ['connect', 'views', 'styles', 'scripts'], function () {
-    require('opn')('http://localhost:9000');
+    // process.env.PORT for Heroku
+    var port = process.env.PORT || 3000; 
+    require('opn')('http://localhost:' + port);
 });
 
 // inject bower components
