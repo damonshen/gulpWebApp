@@ -1,5 +1,5 @@
 {
-  "name": "gulpwepapp",
+  "name": "stockChart",
   "version": "0.0.0",
   "devDependencies": {
     "connect": "^2.14.4",
