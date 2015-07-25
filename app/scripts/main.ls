@@ -1,8 +1,14 @@
-margin = 50
-height = 500 - margin
-width = 960 - margin
+margin = do
+  top: 80
+  right: 80
+  bottom: 80
+  left: 80
+height = 500 - margin.left - margin.right
+width = 960 - margin.top- margin.right
 stockGraph = d3.select \.stock-graph
   .append \svg
+  .attr "width", width + margin.left + margin.right
+  .attr "height", height + margin.top + margin.bottom
   .attr \class, \graph
 
 
@@ -23,8 +29,8 @@ data = d3.csv \./test.csv, (error, data) ->
   minDate = d3.min data, (d) ->
     d.date
   console.log maxDate + '\n' + minDate
-  scaleX = d3.time.scale!.range [0, width] .domain [minDate, maxDate]
-  scaleY = d3.scale.linear!.range [height, 0]
+  scaleX = d3.time.scale!.range [margin.left, width] .domain [minDate, maxDate]
+  scaleY = d3.scale.linear!.range [height + margin.top, margin.top]
   axisX = d3.svg.axis!
     .scale scaleX
     .ticks d3.time.days, 1
@@ -37,12 +43,12 @@ data = d3.csv \./test.csv, (error, data) ->
 
   stockGraph.append \g
     .attr do
-      'transform': 'translate(0,' + height + \)
+      'transform': 'translate(0,' + (height + margin.top) + \)
     .attr \class, 'axis x'
     .call axisX
   stockGraph.append \g
     .attr do
-      'transform': 'translate(' + width + ',0)'
+      'transform': 'translate(' + (width)+ ',0)'
     .attr \class, 'axis y'
     .call axisY
 
